@@ -1,0 +1,81 @@
+==== Simple hellow world with JSX syntax =====
+
+ReactDOM.render(
+<h1> Hello, world !</h1>, // JSX
+document.getElementById('root)
+);
+
+
+==== Embedding Expressions in JSX ========
+
+const name = 'Mugdha';
+const element = <h1>Hello, {name}</h1>; // jSX
+
+ReactDOM.render(
+element,
+document.getElementById('root')
+);
+
+
+===== valid JavaScript expressions =======
+
+// Always try to put expression in parenthesis,its not neccesary.
+
+
+
+function funcExpression(user) {
+  return user.firstName + ' ' + user.lastName;
+}
+
+const user = {
+  firstName: 'Mugdha',
+  lastName: 'Wadhokar'
+};
+const mystyle = {
+  fontSize: 50,
+  color: '#FF0000'
+};
+
+const expression = (<h1 style = {mystyle} > Hello, {funcExpression(user)}</h1>); // applay parenthesis
+        
+ReactDOM.render(
+expression,
+document.getElementById('root')
+);
+
+
+================================================
+
+// If a tag is empty, you may close it immediately with />, like XML:
+const element = <img src={user.avatarUrl} />; 
+
+
+==============================================
+
+// JSX tags contain childer ,  here parenthesis is given to avoid autoinsertion of semicolon for the next line expression.
+
+const element = (
+ <div>
+  <h1> Mugdha </h1> 
+   {// put curly bracket whenever we write a comment within childer section}
+   {/* Multi line comment in curly bracket */}
+  <h2> Wadhokar </h2>
+ </div>
+);
+
+=============== javascript expression inside jsx =================
+
+class app extends React.Component {
+render () {
+ return (
+  <div> 
+   <h1> {1 + 1} </h1> 
+   </div>
+ );
+}
+}
+
+
+
+
+
