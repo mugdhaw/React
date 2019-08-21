@@ -38,22 +38,36 @@ class App extends Component {
         this.setState({ list: updatedList });
     }
 
-    onSearchField(event) {
-        this.setState({searchTerm: event.target.value });
+    onSearchField(e) {
+        // e is a synthetic event
+        this.setState({searchTerm: e.target.value });
     }
     render () {
       var helloWorld = 'Test 1234';
       // Object initialization in Ec5
       const name = 'Mugdha';
+
       const user = {
-          name: name,
+          firstName: 'Mugdha',
+          lastName: 'Wadhokar'
       }
-      return (
+        // ES5
+       // var firstname = user.firstName;
+       // var lastname = user.lastName;
+
+        // ES6
+        const {firstName, lastName} = user;
+
+        console.log(firstName + ' ' + lastName);
+
+        const {list, searchTerm} = this.state;
+
+        return (
            <div className="App">
                <form>
                    <input type="text" onChange={this.onSearchField}/>
                </form>
-               {this.state.list.filter(getSearchValue(this.state.searchTerm)).map(item => {
+               {list.filter(getSearchValue(this.state.searchTerm)).map(item => {
                   return (
                       <div key={item.objectID}>
                           <span> <a href={item.url}>{item.title}</a> </span>
