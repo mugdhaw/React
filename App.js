@@ -64,26 +64,51 @@ class App extends Component {
 
         return (
            <div className="App">
-               <form>
-                   <input type="text" onChange={this.onSearchField}/>
-               </form>
-               {list.filter(getSearchValue(this.state.searchTerm)).map(item => {
-                  return (
-                      <div key={item.objectID}>
-                          <span> <a href={item.url}>{item.title}</a> </span>
-                          <span>{item.points}</span>
-                          <span>{item.author}</span>
-                          <span>{item.num_comments}</span>
-                          <span>
-                              <button type="button" onClick={() => this.onDismiss(item.objectID)}> Dismiss </button>
-                          </span>
-                      </div>
-                  );
-               })}
+               <Search
+                   value={searchTerm}
+                   onChange = {this.onSearchField}
+               />
+               <List
+                   searchValue={searchTerm}
+                   onDismiss={this.onDismiss}
+                   list={list}
+               />
              <h2> {helloWorld} </h2>
            </div>
       );
     }
 }
 
+class Search extends  Component {
+    render () {
+        const {value, onChange} = this.props;
+        return (
+            <form>
+                <input type="text" value = {value} onChange={onChange}/>
+            </form>
+        );
+
+    }
+}
+
+class List extends Component {
+    render () {
+        const {searchValue, onDismiss, list} = this.props;
+        return (
+            <div>
+                {list.filter(getSearchValue(searchValue)).map(item =>
+                    <div key={item.objectID}>
+                        <span> <a href={item.url}>{item.title}</a> </span>
+                        <span>{item.points}</span>
+                        <span>{item.author}</span>
+                        <span>{item.num_comments}</span>
+                        <span>
+                            <button type="button" onClick={() => onDismiss(item.objectID)}> Dismiss </button>
+                        </span>
+                    </div>
+                )}
+            </div>
+        );
+    }
+}
 export default App;
