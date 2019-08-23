@@ -46,7 +46,6 @@ class App extends Component {
       var helloWorld = 'Test 1234';
       // Object initialization in Ec5
       const name = 'Mugdha';
-
       const user = {
           firstName: 'Mugdha',
           lastName: 'Wadhokar'
@@ -57,17 +56,16 @@ class App extends Component {
 
         // ES6
         const {firstName, lastName} = user;
-
         console.log(firstName + ' ' + lastName);
-
         const {list, searchTerm} = this.state;
 
         return (
            <div className="App">
                <Search
                    value={searchTerm}
-                   onChange = {this.onSearchField}
-               />
+                   onChange = {this.onSearchField}>
+                   Search:
+               </Search>
                <List
                    searchValue={searchTerm}
                    onDismiss={this.onDismiss}
@@ -79,16 +77,15 @@ class App extends Component {
     }
 }
 
-class Search extends  Component {
-    render () {
-        const {value, onChange} = this.props;
-        return (
-            <form>
-                <input type="text" value = {value} onChange={onChange}/>
-            </form>
-        );
-
-    }
+// Converted class component to functional component as there is no state update required in this component , same can be done with List but for e.f purpose it is keep in class state
+function Search (props) {
+    // we can write our code here if any logic
+    const {value, onChange, children} = props;
+    return (
+        <form>
+            {children} <input type="text" value = {value} onChange={onChange}/>
+        </form>
+    );
 }
 
 class List extends Component {
