@@ -1,8 +1,21 @@
 import React, { Component } from 'react';
 import './App.css';
 
-
+// Sample List Data
 const listArray = [ { title: 'React', url: 'https://reactjs.org/', author: 'Jordan Walke', num_comments: 3, points: 1, objectID: 0, }, { title: 'Redux', url: 'https://redux.js.org/', author: 'Dan Abramov, Andrew Clark', num_comments: 2, points: 5, objectID: 1, }, ];
+
+const DEFAULT_QUERY = 'redux';
+const PATH_BASE = 'https://hn.algolia.com/api/v1';
+const PATH_SEARCH = '/search';
+const PARAM_SEARCH = 'query=';
+
+// ES6
+//const url = '${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}';
+const url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}`;
+
+// ES5
+//var url = PATH_BASE + PATH_SEARCH + '?' + PARAM_SEARCH + DEFAULT_QUERY;
+console.log('URL ::',url);
 
 
 function getSearchValue(searchTerm) {
@@ -20,12 +33,18 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-           list: listArray,
-            searchTerm: '',
+           //list: listArray,
+	   result: '',
+           searchTerm: DEFAULT_QUERY,
         };
         // this is the class instance , in order to define function as class method bind it in constructor
         this.onDismiss = this.onDismiss.bind(this);
         this.onSearchField = this.onSearchField.bind(this);
+	this.setSearchResult = this.setSearchResult.bind(this);
+    }
+
+    setSearchResult (result) {
+      this.setState({result});
     }
 
     // This is EC6 definatio of function
@@ -57,8 +76,8 @@ class App extends Component {
         // ES6
         const {firstName, lastName} = user;
         console.log(firstName + ' ' + lastName);
-        const {list, searchTerm} = this.state;
-
+        const {result, searchTerm} = this.state;
+	
         return (
            <div className="App">
                <Search
@@ -66,15 +85,32 @@ class App extends Component {
                    onChange = {this.onSearchField}>
                    Search:
                </Search>
-               <List
-                   searchValue={searchTerm}
-                   onDismiss={this.onDismiss}
-                   list={list}
-               />
+		{ result 
+                  ? <List
+                    searchValue={searchTerm}
+                    onDismiss={this.onDismiss}
+                    list={result.hits}
+                   />
+                : null
+		}
              <h2> {helloWorld} </h2>
            </div>
       );
     }
+
+  componentDidMount() {
+
+    const {result, searchTerm} = this.state;
+
+    // Native fetch API
+    fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}`)
+   .then(response => response.json())
+   .then(result => this.setSearchResult(result))
+   .catch(error => error);
+
+  }
+
+
 }
 
 // Converted class component to functional component as there is no state update required in this component , same can be done with List but for e.f purpose it is keep in class state
